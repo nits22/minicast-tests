@@ -37,18 +37,26 @@ def test_rotation_during_playback_keeps_state_and_audio(pages: Pages, driver: We
     before_pos = probe.position()
     original = driver.orientation
 
-    try:
-        driver.orientation = "LANDSCAPE"
-        time.sleep(2.5)
-        assert probe.state() == before_state, "playback state changed on rotation"
-        assert probe.position() >= before_pos, "playback restarted on rotation"
-        assert now.episode_title() == catalog.LONG, "episode metadata lost on rotation"
-        assert now.duration() == 60
+    assert now.duration() == 60, "wrong episode before rotating"
 
-        driver.orientation = "PORTRAIT"
-        time.sleep(2.5)
-        assert now.episode_title() == catalog.LONG
-        assert probe.state() == before_state
-        assert probe.audio_active(), "audio stopped across the rotation"
+    try:
+        with allure.step("rotate to landscape"):
+            driver.orientation = "LANDSCAPE"
+            time.sleep(2.5)
+            assert probe.state() == before_state, "playback state changed on rotation"
+            assert probe.position() >= before_pos, "playback restarted on rotation"
+            assert now.episode_title() == catalog.LONG, "episode metadata lost on rotation"
+            # Deliberately not asserting on the lower controls here. Landscape clips
+            # them and the screen does not scroll (BUG-012), and how much is lost
+            # depends on screen height - so requiring them would make this test a
+            # layout test that passes or fails by device. Layout is TC-9.3's job.
+
+        with allure.step("rotate back to portrait"):
+            driver.orientation = "PORTRAIT"
+            time.sleep(2.5)
+            assert now.episode_title() == catalog.LONG
+            assert now.duration() == 60, "duration lost after rotating back"
+            assert probe.state() == before_state
+            assert probe.audio_active(), "audio stopped across the rotation"
     finally:
         driver.orientation = original

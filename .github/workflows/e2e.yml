@@ -69,6 +69,9 @@ jobs:
           api-level: 34
           arch: x86_64
           target: google_apis
+          # Pinned: without it the screen size is whatever the action defaults to,
+          # and layout-sensitive tests then pass or fail by luck.
+          profile: pixel_5
           # The action's default options include -noaudio; this app plays audio and
           # `dumpsys audio` is one of the three signals the tests assert on.
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none

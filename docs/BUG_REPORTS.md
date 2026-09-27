@@ -353,3 +353,37 @@ decision on whether the control should be disabled.
 
 **Genre search** — `technology`, `travel`, `business` return "No shows found". Title and author both match, so
 this looks deliberate. Raised with the PO in TC-1.3 rather than filed.
+
+---
+
+## BUG-012 — Now Playing is cut off in landscape and will not scroll
+
+**Severity** 2 · **Case** TC-9.3 · **Found by** the automated suite, on CI
+
+Same defect as BUG-007, on a different screen. In landscape the Now Playing controls below the
+transport row are off-screen, and the screen does not scroll, so they cannot be reached. How
+much is lost depends on the device height.
+
+**Steps**
+1. Play any episode and open Now Playing.
+2. Rotate to landscape.
+3. Try to reach the speed and sleep-timer controls.
+
+**Expected** Every control reachable, scrolling if the window is too short.
+
+**Actual** They are not rendered at all, and there is nothing to scroll.
+
+**Evidence** Elements present in the view hierarchy, same session, rotated:
+
+```
+portrait    episodeTitle y  showTitle y  seekBar y  positionLabel y  durationLabel y
+            playPauseButton y  skipForwardButton y  speedButton y  sleepTimerButton y
+landscape   episodeTitle y  showTitle y  seekBar y  positionLabel y  durationLabel y
+            playPauseButton y  skipForwardButton y  speedButton NO  sleepTimerButton NO
+```
+
+On a shorter screen it starts earlier: the CI emulator also loses `durationLabel`, which is what
+failed the automated rotation test.
+
+**Note** Almost certainly one fix with BUG-007 — neither screen scrolls when the window is
+shorter than its content. Worth checking every screen at landscape height rather than these two.

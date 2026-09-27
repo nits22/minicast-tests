@@ -409,6 +409,10 @@ credit on top of that. Add it once the job is green and confirm it stays green.
   this machine — `simctl` for simulators, `xctrace` for physical devices. What has never been
   exercised is opening a session: there is no iOS build of MiniCast, so the page objects,
   locators and capabilities are untested.
+- **Rotation is tested for playback continuity, not layout.** Landscape clips the lower Now
+  Playing controls and does not scroll (BUG-012), and how much is lost depends on screen
+  height — so asserting on them would make the test pass or fail by device. Layout stays
+  manual, in TC-9.3.
 - **Interruptions are not automated.** Real calls, audio focus loss and Bluetooth handover need
   a second phone. They stay manual, in `S8 - Interruptions`.
 - **Two-device parallelism is proven, three or more is not.** Worker-to-device mapping is
