@@ -379,6 +379,10 @@ provided with the exercise rather than replacing it — same emulator action, sa
 - `implicitly_wait(0)` in the suite, so only explicit waits apply
 - `--reruns 1` — one retry absorbs emulator noise; three would hide a real failure
 - App installed once with `adb`, then `--no-install` so Appium does not reinstall it
+- `POST_NOTIFICATIONS` granted two ways — `adb install -g` and `autoGrantPermissions` in the
+  capabilities. It is a runtime permission on API 33+, and left ungranted the system dialog
+  sits on top of the app and every locator lookup fails. Granting it in one place only would
+  mean any change to how the app is installed reintroduces the dialog
 
 **Structural**
 

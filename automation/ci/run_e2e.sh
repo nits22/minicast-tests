@@ -24,6 +24,10 @@ echo "::endgroup::"
 echo "::group::Install the app"
 adb install -r -g "$APK"
 adb shell pm list packages | grep -q com.audiomob.minicast
+# -g should already have done this; granting again is harmless and means a
+# notification dialog can never appear over the app mid-run.
+adb shell pm grant com.audiomob.minicast android.permission.POST_NOTIFICATIONS 2>/dev/null || true
+adb shell dumpsys package com.audiomob.minicast | grep -m1 POST_NOTIFICATIONS.*granted || true
 echo "::endgroup::"
 
 echo "::group::Start Appium"

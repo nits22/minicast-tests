@@ -7,4 +7,9 @@ appium:adbExecTimeout: 40000
 appium:uiautomator2ServerLaunchTimeout: 90000
 appium:disableWindowAnimation: true
 appium:ignoreHiddenApiPolicyError: true
+# POST_NOTIFICATIONS is a runtime permission on API 33+. Left ungranted, the
+# system dialog sits on top of the app and every locator lookup fails. The manual
+# plan tests the *denied* path deliberately (TC-7.10); the automated suite is not
+# about that, so grant on install.
+appium:autoGrantPermissions: true
 # app is injected by conftest from --app / MINICAST_APK
