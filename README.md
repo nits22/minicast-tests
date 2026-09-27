@@ -398,9 +398,21 @@ provided with the exercise rather than replacing it — same emulator action, sa
   results, `appium.log`, `logcat.txt`, 14-day retention
 - Per-test screenshot, page source and logcat attached to the Allure result
 
-**Deferred on purpose:** the booted-AVD snapshot cache, worth about four minutes a run. It is the
-most likely thing to break a first attempt, and the requirement is a green run — hardening is
-credit on top of that. Add it once the job is green and confirm it stays green.
+**Booted-AVD snapshot cache.** Added only after the job was first green, deliberately in that
+order — it is the most likely thing to break a first attempt.
+
+Worth measuring rather than assuming. On the first green run the emulator step was 421s of a
+465s job, and the suite itself accounts for roughly 290s of that, so cold boot is about two
+minutes and a snapshot restore still costs ~40s. Realistic saving is **60–90 seconds** — the
+suite runtime dominates the job and caching cannot touch it. The cache key pins api-level, arch,
+target and profile, because a snapshot from a different image is not interchangeable. The run
+step passes `-no-snapshot-save`, so a run that dirties the device cannot poison the next run's
+cache.
+
+Both emulator steps spell out `emulator-options` in full rather than relying on the default,
+which is `-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim`. The
+`-noaudio` in that default would silence the audio `dumpsys audio` reads, so the suite would
+lose one of its three playback signals without failing loudly.
 
 ### Known limitations
 

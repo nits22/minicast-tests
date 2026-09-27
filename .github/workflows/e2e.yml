@@ -63,6 +63,36 @@ jobs:
           uv run ruff check .
           uv run mypy
 
+      # Booting the AVD cold costs ~2 minutes. Caching a booted snapshot trades
+      # that for a ~40s restore. The key covers every property that changes the
+      # image: a snapshot from a different api-level/arch/target/profile is not
+      # interchangeable, and restoring the wrong one fails in confusing ways.
+      - name: Cache the AVD snapshot
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb_keys
+          key: avd-34-x86_64-google_apis-pixel_5
+
+      - name: Create the AVD and save a booted snapshot
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          profile: pixel_5
+          force-avd-creation: false
+          # Mirrors the run step apart from the snapshot flags. This line must
+          # never be deleted: the action's default is
+          #   -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          # and falling back to it would silence the audio the probe reads.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "AVD created and snapshot saved."
+
       - name: Run tests on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -72,9 +102,13 @@ jobs:
           # Pinned: without it the screen size is whatever the action defaults to,
           # and layout-sensitive tests then pass or fail by luck.
           profile: pixel_5
-          # The action's default options include -noaudio; this app plays audio and
-          # `dumpsys audio` is one of the three signals the tests assert on.
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none
+          force-avd-creation: false
+          # Audio is left on: `dumpsys audio` is one of the three playback signals
+          # the tests assert on. That is why these options are spelled out rather
+          # than defaulted - the action's default includes -noaudio.
+          # -no-snapshot-save: boot from the cached snapshot, do not rewrite it,
+          # so a run that dirties the device cannot poison the next one's cache.
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none
           disable-animations: true
           working-directory: automation
           # One script file: the action runs each inline line in its own shell, so
