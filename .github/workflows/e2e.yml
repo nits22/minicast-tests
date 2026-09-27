@@ -94,5 +94,6 @@ jobs:
             automation/allure-results
             automation/appium.log
             automation/logcat.txt
+            automation/pytest.log
           retention-days: 14
           if-no-files-found: warn

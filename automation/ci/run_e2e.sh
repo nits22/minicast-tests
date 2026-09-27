@@ -40,14 +40,20 @@ fi
 echo "Appium ready (pid $APPIUM_PID)"
 echo "::endgroup::"
 
-echo "::group::Run the suite"
+# Deliberately NOT inside a ::group::. Folding the setup is helpful; folding the
+# test output means a failure is invisible without downloading the artifact.
+echo "--- Running the suite ---"
 set +e
 # The APK is already installed above, so Appium reuses it rather than installing twice.
-uv run pytest -v --no-install --reruns 1 --reruns-delay 3
-STATUS=$?
+uv run pytest -v -ra --no-install --reruns 1 --reruns-delay 3 2>&1 | tee pytest.log
+STATUS=${PIPESTATUS[0]}
 set -e
-echo "::endgroup::"
 
 adb logcat -d > logcat.txt 2>/dev/null || true
 kill "$APPIUM_PID" 2>/dev/null || true
+
+if [[ "$STATUS" -ne 0 ]]; then
+  echo "::error::Suite failed (exit $STATUS). Summary:"
+  sed -n '/short test summary info/,$p' pytest.log | head -40
+fi
 exit "$STATUS"
