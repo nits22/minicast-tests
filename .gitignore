@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.pdf
+
+# test run output
+automation/allure-results/
+automation/allure-report/
+automation/appium.log
+automation/logcat.txt
+.mypy_cache/

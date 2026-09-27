@@ -1,0 +1,6 @@
+# Placeholder. No iOS build exists yet, so this path has never been exercised.
+# The structure is here so adding iOS is a config + locator job, not a rewrite.
+platformName: iOS
+appium:automationName: XCUITest
+appium:bundleId: com.audiomob.minicast
+appium:newCommandTimeout: 120

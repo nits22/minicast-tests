@@ -1,0 +1,209 @@
+﻿"Test Case ID","Section","Priority","Title","Preconditions","Test Data","Steps","Expected Result","Status","Actual Result","Bug ID"
+"TC-0.1","S0 - Smoke","P0","App launches to Discover","App installed, device online","-","1. Launch MiniCast from the launcher.
+2. Wait for the Featured list.","- Discover opens with the search field and 6 shows.
+- No crash or ANR.","Pass","Cold start reached Discover in under half a second. No crash.",""
+"TC-0.2","S0 - Smoke","P0","Catalog content is correct","On Discover","6 shows - see Appendix A","1. Read each row: show name, author, episode count.","- All 6 rows match the catalog. Counts read 5,4,4,5,4,4.","Pass","All six shows present with the right authors and episode counts (5, 4, 4, 5, 4, 4).",""
+"TC-0.3","S0 - Smoke","P0","Basic playback works","On Discover, volume up","The Great Password Purge","1. Open The Daily Byte > The Great Password Purge.
+2. Listen. Open Now Playing from the mini-player.","- Audio plays, counting up from zero.
+- Timer ticks, duration shows 0:30.","Pass","Audio played from the start, timer ticked, duration read 0:30. Counting confirmed by ear.",""
+"TC-0.4","S0 - Smoke","P0","Media notification appears","Something playing","-","1. Pull down the notification shade.","- MiniCast notification with episode title, show name and transport controls.","Pass","Notification showed the episode title, show name and transport controls.",""
+"TC-0.5","S0 - Smoke","P0","Settings defaults","Fresh install","-","1. Open Settings from the gear icon.","- Resume ON, speed 1x, sleep timer 10 min, sleep notification ON.","Pass","Resume ON, speed 1x, sleep timer 10 min, notification ON.",""
+"TC-1.1","S1 - Discover & Search","P1","Featured list loads","Fresh launch","-","1. Launch the app and watch the Featured area.","- Loading indicator, then the 6 shows.
+- No blank screen or error flash.","Pass","Loading state, then all six shows. Content matched the catalog.",""
+"TC-1.2","S1 - Discover & Search","P1","Search needs 2 characters","On Discover","'t', then 'th'","1. Type a single character in search. Wait.
+2. Add a second character.","- 1 char: nothing happens, Featured list stays.
+- 2 chars: returns The Daily Byte and True North Tales.","Pass","One character did nothing. 'th' returned The Daily Byte and True North Tales.",""
+"TC-1.3","S1 - Discover & Search","P1","Search matches title and author","On Discover","See test data below","1. Search 'mi'. Clear.
+2. Search 'MINDFUL'. Clear.
+3. Search 'media', then 'radio', then 'wander'. Clear between each.
+4. Search 'technology' and 'travel'.","- 'mi' and 'MINDFUL' both return Mindful Minutes - case doesn't matter.
+- Author terms work: media > The Daily Byte, radio > Startup Stories, wander > True North Tales.
+- Genre terms return 'No shows found'. Flag to PO - genre isn't searchable.","Pass","media, radio, wander and lab each matched the right show by author. technology and travel returned 'No shows found' - genre is not searched. Raised with the PO rather than filed.",""
+"TC-1.4","S1 - Discover & Search","P1","No results state","On Discover","'zz'","1. Search 'zz'.","- 'No shows found'. No error, no retry button.","Pass","'zz' showed 'No shows found'. No error, no retry.",""
+"TC-1.5","S1 - Discover & Search","P1","Clearing search restores Featured","Search results on screen","'th'","1. Search 'th'.
+2. Delete one character, then the rest.","- Featured list comes back. No stale results left behind.","Pass","Deleting to one character and then to empty restored the Featured list both times.",""
+"TC-1.6","S1 - Discover & Search","P2","Fast retyping doesn't show stale results","On Discover","'history' then 'mindful'","1. Type 'history', then immediately clear and type 'mindful' before results appear.
+2. Wait 5s.","- Only Mindful Minutes shown. The older query never wins.","Pass","Typing 'history' and immediately replacing it with 'mindful' settled on Mindful Minutes only.",""
+"TC-1.7","S1 - Discover & Search","P2","Odd input doesn't break search","On Discover","spaces, %, --, 200-char string","1. Enter two spaces. Then '%'. Then '--'. Then a very long string.
+2. Clear fully between each.","- No crash, layout holds.
+- Each input gives a defined result (empty state or Featured).","Pass","Two spaces, %, -- and a 200-character string all handled. Empty state shown, layout intact, no crash.",""
+"TC-1.8","S1 - Discover & Search","P2","Multi-word search","On Discover","'daily byte', 'byte media'","1. Search 'daily byte'. Clear.
+2. Search 'byte media' - spans title and author.","- Both return The Daily Byte.","Pass","'daily byte', 'the daily' and 'byte media' all returned The Daily Byte.",""
+"TC-1.9","S1 - Discover & Search","P2","Back dismisses keyboard, keeps the query","Search results shown, keyboard up","'th'","1. Press Back once.","- Keyboard closes. Still on Discover with 'th' and its results.","Pass","Back closed the keyboard. Query and both results stayed on screen.",""
+"TC-2.1","S2 - Show Detail","P1","Episode lists are correct","On Discover","All 6 shows - Appendix A","1. Open each show in turn.
+2. Check episode titles, dates and durations against the catalog.","- All 26 episodes correct.
+- Header shows right author, genre, episode count.
+- Newest episode first.","Pass","All 26 episodes across the six shows matched on title, date and episode count.",""
+"TC-2.2","S2 - Show Detail","P1","Duration and date formatting","On The Daily Byte","0:10 / 0:30 / 1:00 episodes","1. Read the durations and dates on the episode rows.","- Durations read 0:10, 0:30, 1:00 - not 0:60.
+- Dates read 'Aug 18, 2026' / 'Aug 4, 2026'.","Pass","Durations read 0:10, 0:30 and 1:00. Dates read Aug 18, 2026 and Aug 4, 2026.",""
+"TC-2.3","S2 - Show Detail","P1","Episode list loading","On Discover","Mindful Minutes","1. Tap a show and watch the list area.","- Loading state, then the episodes. Header and back arrow usable straight away.","Pass","Episode list appeared after the loading delay; header and back arrow usable immediately.",""
+"TC-2.4","S2 - Show Detail","P1","Back keeps the search results","On Discover","'th' > True North Tales","1. Search 'th', open True North Tales, press back.","- Back on Discover with 'th' still in the field and both results showing.","Pass","Back from the show kept 'th' in the field and both results on screen.",""
+"TC-2.5","S2 - Show Detail","P2","Switching shows quickly","On Discover","The Daily Byte then History Rewind","1. Open The Daily Byte, go back immediately, open History Rewind before the first list renders.","- Only History Rewind episodes shown. No Daily Byte content bleeds through.","Pass","Opening a second show before the first had rendered showed History Rewind only.",""
+"TC-2.6","S2 - Show Detail","P1","Mini-player doesn't cover the last episode","An episode playing","Startup Stories (5 episodes)","1. Start any episode so the mini-player shows.
+2. Open Startup Stories and scroll to the bottom.
+3. Tap the last row.","- Last episode fully visible above the mini-player and tappable.","Not Run","",""
+"TC-3.1","S3 - Playback","P0","Audio, timer and system state agree","Episode playing","AI Writes Our Show Notes Now (1:00)","1. Play the episode and open Now Playing.
+2. At three points, note the spoken number and the timer.
+3. Cross-check with the media session (Appendix B).","- Spoken number, on-screen timer and system position all match within a second.","Pass","Timer matched the player at all three samples - 0:22, 0:30 and 0:39. Spoken number confirmed by ear.",""
+"TC-3.2","S3 - Playback","P0","Pause and resume","Episode playing","AI Writes Our Show Notes Now","1. Pause at around 0:08.
+2. Wait 6s, watching the timer.
+3. Resume.","- Audio stops, timer frozen.
+- Media session reports PAUSED.
+- Resumes from the same point.","Fail","Audio stopped, timer froze, and it resumed from the same point - but the app keeps reporting itself as playing, so the notification still offers Pause. See BUG-001.","BUG-001"
+"TC-3.3","S3 - Playback","P1","Mini-player and Now Playing stay in sync","Episode playing","AI Writes Our Show Notes Now","1. Go back to the show list and pause from the mini-player.
+2. Open Now Playing.","- Both controls show Play. No disagreement between them.","Pass","Pausing from the mini-player left both it and Now Playing showing Play.",""
+"TC-3.4","S3 - Playback","P0","End of episode","Short episode playing","The Off-By-One Episode","1. Let it play to the end without touching anything.
+2. Check the player, the mini-player and the notification.","- Playback stops, no auto-advance to the next episode.
+- Everything shows a stopped state - no ghost notification.","Pass","Stopped at the end, no auto-advance. Reported position runs a fraction past the episode length - see BUG-002.","BUG-002"
+"TC-3.5","S3 - Playback","P1","Replay after it finishes","Episode finished","The Off-By-One Episode","1. Press play on the finished episode.","- Starts again from 0:00.","Pass","Pressing play on a finished episode restarted it from 0:00.",""
+"TC-3.6","S3 - Playback","P1","Switching episode mid-playback","An episode playing","The Great Password Purge, then AI Writes Our Show Notes Now, then One Breath at a Time (Mindful Minutes)","1. Play one episode, go back, tap a different one.
+2. Repeat with an episode from another show.","- Old audio stops immediately - never two streams.
+- Title, show name and duration all update.
+- Notification updates too.","Pass","Switching within the show and to another show updated the title, duration and show name.",""
+"TC-3.7","S3 - Playback","P1","Buffering is visible","Fresh launch","AI Writes Our Show Notes Now","1. Tap an episode and watch until audio starts.","- Loading shown during the delay. Tap is clearly acknowledged.","Pass","Buffering shown for roughly three seconds before audio began.",""
+"TC-3.8","S3 - Playback","P2","Double-tapping play/pause","Episode playing","AI Writes Our Show Notes Now","1. Tap play/pause twice quickly. Repeat a few times.","- Settles in a sane state. Icon always matches whether audio is playing.","Pass","A fast double tap left the control and the audio in step.",""
+"TC-3.9","S3 - Playback","P2","Volume and silent mode","Episode playing","AI Writes Our Show Notes Now","1. Press volume down to zero, then back up.
+2. Put the phone on silent.","- Volume keys control the media stream; playback isn't interrupted.
+- Silent mode does not mute media (correct Android behaviour).","Pass","Volume keys adjusted the media stream without interrupting playback. Silent mode not tried.",""
+"TC-3.10","S3 - Playback","P2","Headphone unplug","Playing through wired or BT headphones","AI Writes Our Show Notes Now","1. Unplug the headphones / disconnect the headset mid-playback.","- Playback pauses. Audio does not blast out of the speaker.","Not Run","",""
+"TC-4.1","S4 - Player Controls","P0","Skip forward and back","Episode playing","AI Writes Our Show Notes Now","1. At 0:10 tap +15s.
+2. Let it run to 0:40, tap -15s.","- 0:10 > 0:25 and 0:40 > 0:25.
+- Spoken number matches the new position.
+- Seek bar keeps moving forward smoothly after each skip - no jumping back.","Fail","+15s moved 30 seconds (0:26 to 0:56). -15s moved 15 correctly. See BUG-005.","BUG-005"
+"TC-4.2","S4 - Player Controls","P0","Skip clamps at both ends","Episode playing","AI Writes Our Show Notes Now (1:00), The Great Password Purge (0:30) and The Off-By-One Episode (0:10)","1. At 0:05 tap -15s. Tap it a few more times at 0:00.
+2. On the 0:30 episode, at 0:25 tap +15s.
+3. On the 0:10 episode, tap +15s from the start.","- Never goes below 0:00 or past the duration.
+- No crash, no wrap-around.
+- The 0:10 episode ends cleanly.","Pass","Clamps correctly at both ends - never below 0:00, never past the duration, and the 0:10 episode ends cleanly. The forward jump itself measured 30s, see BUG-005.","BUG-005"
+"TC-4.3","S4 - Player Controls","P1","Repeated skips","Episode paused at 0:00","AI Writes Our Show Notes Now","1. Tap +15s five times quickly.","- Lands at the end deterministically. No taps lost.","Pass","Repeated taps land at the end deterministically, though it got there in two taps rather than five because each jump is 30s - see BUG-005.","BUG-005"
+"TC-4.4","S4 - Player Controls","P0","Dragging the seek bar moves the audio","Episode playing","AI Writes Our Show Notes Now","1. Drag the thumb to the middle.
+2. Listen to the next spoken number.
+3. Repeat at 25% and 75%.","- Timer and audio both land near 0:30 / 0:15 / 0:45.
+- If the timer moves but the audio carries on from before, that's a Sev-1 bug.","Pass","Dragging to 25%, 50% and 75% landed at 14s, 29s and 43s. Spoken number confirmed by ear.",""
+"TC-4.5","S4 - Player Controls","P1","Seeking while paused","Episode paused at 0:10","AI Writes Our Show Notes Now","1. Drag the thumb to about 0:45 while paused, then press play.","- Resumes from 0:45, not 0:10.","Pass","Seeking to 43s while paused resumed from 43s, not from where it was paused.",""
+"TC-4.6","S4 - Player Controls","P1","Seek to the very start and very end","Episode playing","AI Writes Our Show Notes Now","1. Drag fully left, then fully right.","- 0:00 replays from the beginning.
+- Full right reaches the end cleanly.","Pass","Full left returned to the start, full right reached the end cleanly.",""
+"TC-4.7","S4 - Player Controls","P0","1.5x and 2x actually change the rate","Episode loaded at 0:00","AI Writes Our Show Notes Now","1. Set 1.5x, play for 20s by the clock, pause. Note how far it moved.
+2. Reset and repeat at 2x.","- 1.5x moves about 30s of audio in 20s; 2x moves about 40s.
+- Audio is audibly faster.","Pass","1.5x moved 27s of audio in 20s of real time; 2x moved 36s. Both audibly faster.",""
+"TC-4.8","S4 - Player Controls","P1","Speed button cycles","Episode playing","-","1. Tap the speed button four times.","- 1x > 1.5x > 2x > 1x. Rate matches the label each time.","Pass","Cycled 1x, 1.5x, 2x and back to 1x, rate matching the label each time.",""
+"TC-4.9","S4 - Player Controls","P1","Speed carries to the next episode","Playing at 2x","AI Writes Our Show Notes Now, then The Great Password Purge","1. Set 2x, then start a different episode.","- Behaviour is consistent - either keeps 2x or falls back to the Settings default.
+- Label and actual rate always agree.","Pass","After playing at 2x, the next episode opened at 1x. Same on every run.",""
+"TC-4.10","S4 - Player Controls","P1","Skip is 15 media seconds at any speed","Playing at 2x","AI Writes Our Show Notes Now","1. At 2x, reach 0:20 and tap +15s.
+2. Repeat at 1.5x.","- Jumps to 0:35 both times - 15 media seconds, not 7.5 or 30.","Fail","At both 2x and 1.5x the forward skip moved about 30 seconds instead of 15. See BUG-005.","BUG-005"
+"TC-5.1","S5 - Settings & Resume","P0","Resume picks up where you left off","Resume ON, fresh install","The Great Password Purge","1. Play to about 0:18 and pause.
+2. Force close the app and reopen it.
+3. Play the same episode.","- Resumes near 0:18 with the matching spoken number.","Blocked","Paused at 30s, reopened at 11s. Cannot be judged while BUG-003 stands.","BUG-003"
+"TC-5.2","S5 - Settings & Resume","P0","Resume survives the app being killed in the background","Resume ON","The Great Password Purge","1. Play to about 0:22, pause, press Home.
+2. Kill the app from the background (Appendix B) and reopen from Recents.
+3. Play the same episode.","- Resumes near 0:22. No crash on relaunch.","Fail","With Resume on, the position is not restored after the app is killed in the background. See BUG-011.","BUG-011"
+"TC-5.3","S5 - Settings & Resume","P0","Resume OFF starts from the beginning","Fresh install","The Great Password Purge","1. Turn Resume OFF in Settings.
+2. Play to 0:18, force close, reopen.
+3. Play the same episode.","- Starts at 0:00.
+- Toggle is still OFF.","Fail","With Resume off, played to 20s then opened a never-played episode: it started at 5s. See BUG-004.","BUG-004"
+"TC-5.4","S5 - Settings & Resume","P0","Each episode keeps its own position","Resume ON, fresh install","AI Writes Our Show Notes Now (1:00), The Great Password Purge (0:30), The Pivot That Wasn't, from Startup Stories","1. Play AI Writes Our Show Notes Now to about 25s and pause.
+2. Open Great Password Purge - not played since install.
+3. Open The Pivot That Wasn't - also not played.
+4. Go back to AI Writes Our Show Notes Now.","- Episodes never played start at 0:00.
+- AI Writes Our Show Notes Now returns to its own 25s.","Fail","Clean install. Played AI Writes Our Show Notes Now to 27s; The Great Password Purge, never played, opened at 30s - its end. The Pivot That Wasn't opened at 13s. See BUG-003.","BUG-003"
+"TC-5.5","S5 - Settings & Resume","P1","Default speed applies to new playback","Fresh install","-","1. Set default speed to 2x in Settings.
+2. Force close, reopen, start an episode.","- Plays at 2x from the start; speed button shows 2x.","Not Run","",""
+"TC-5.6","S5 - Settings & Resume","P1","Settings survive a restart","-","speed 2x, sleep 15 min, notification OFF","1. Change all three settings.
+2. Force close and reopen. Open Settings.","- All three retain the new values.","Pass","Speed 2x, sleep 15 min and notification off all survived a force close and relaunch.",""
+"TC-5.7","S5 - Settings & Resume","P2","Changing speed during playback","Episode playing at 1x","-","1. While playing, change the default speed in Settings and come back.","- Defined behaviour - applies now or on the next episode.
+- Label and actual rate always match.","Not Run","",""
+"TC-5.8","S5 - Settings & Resume","P2","Finished episode doesn't resume at the end","Resume ON","The Off-By-One Episode","1. Let it finish. Force close, reopen, open it again.","- Starts at 0:00, not stuck at the end.","Blocked","Finished at 10s, reopened at 7s - neither the start nor the end. Blocked by BUG-003.","BUG-003"
+"TC-5.9","S5 - Settings & Resume","P1","Reinstall restores defaults","Settings changed, episodes part-played","-","1. Wipe app data (Appendix B) and reopen.","- Resume ON, 1x, 10 min, notification ON.
+- All saved positions gone.","Pass","Defaults correct after a reinstall. The usual wipe command is refused on this handset - see TEST-ENV-001.","TEST-ENV-001"
+"TC-6.1","S6 - Sleep Timer","P1","Arming and cancelling the timer","Episode playing, timer set to 10 min","-","1. Tap Sleep timer.
+2. Watch the label for a few seconds.
+3. Tap it again.","- Counts down from 9:59.
+- Second tap cancels it; playback continues.","Not Run","",""
+"TC-6.2","S6 - Sleep Timer","P1","1-minute timer stops playback","Timer set to 1 min","AI Writes Our Show Notes Now","1. Set 1 min in Settings, play an episode, arm the timer.
+2. Leave it alone and time it.","- Playback stops at 60s (+/- 2s).
+- Timer label resets to 'Sleep timer'.","Not Run","",""
+"TC-6.3","S6 - Sleep Timer","P0","Timer expiring exactly when the episode ends","Timer set to 1 min","AI Writes Our Show Notes Now","1. Start the episode at 0:00 and arm the 1-min timer at the same moment.
+2. Wait it out. Repeat 3 times.","- No crash. Only one stop is handled.
+- No leftover armed timer, no duplicate notification.","Pass","Timer and end of episode landed together at 60s. Playback stopped once, no crash, and the timer disarmed itself.",""
+"TC-6.4","S6 - Sleep Timer","P1","Timer notification respects the setting","Timer 1 min","-","1. With the notification setting ON, arm the timer and let it fire.
+2. Turn the setting OFF and repeat.","- ON: notification appears when it fires.
+- OFF: playback still stops, no notification.","Not Run","",""
+"TC-6.5","S6 - Sleep Timer","P1","Timer works in the background and with the screen off","Timer 1 min","AI Writes Our Show Notes Now","1. Arm the timer, press Home, wait it out.
+2. Repeat with the screen locked.","- Fires at 60s both times.","Not Run","",""
+"TC-6.6","S6 - Sleep Timer","P1","Timer survives rotation","Timer 10 min, armed","-","1. Note the countdown, rotate to landscape and back.","- Countdown continues from the right value. Not reset, not cancelled.","Not Run","",""
+"TC-6.7","S6 - Sleep Timer","P2","Changing the duration while armed","Timer armed at 10 min","-","1. Go to Settings, pick 1 min, return to the player.","- Countdown shown matches the duration that actually fires.","Not Run","",""
+"TC-6.8","S6 - Sleep Timer","P2","Arming with nothing playing","Playback paused or finished","-","1. Pause an episode, then arm the timer.","- Currently counts down against silence (OBS-1).
+- At minimum must not crash or fire a phantom notification.","Not Run","",""
+"TC-7.1","S7 - Background & Notification","P0","Playback continues in the background","Episode playing","AI Writes Our Show Notes Now","1. Press Home and listen for 20s.
+2. Lock the screen and listen for another 20s.","- Audio continues uninterrupted both times.","Pass","Tested by hand. Audio continues with the app backgrounded and with the screen off.",""
+"TC-7.2","S7 - Background & Notification","P0","Notification controls work and stay in sync","Episode playing, app backgrounded","AI Writes Our Show Notes Now","1. Pause from the notification.
+2. Resume from the notification.
+3. Open the app.","- Audio pauses and resumes from the same point.
+- In-app control matches the notification.","Pass","Tested by hand. Pause and resume from the notification both work and the in-app control matches.",""
+"TC-7.3","S7 - Background & Notification","P1","Notification metadata updates","Episode playing","Great Password Purge, then One Breath at a Time","1. Check the notification, switch to an episode in a different show, check again.","- Title, show name and artwork all update. Only one notification at a time.","Not Run","",""
+"TC-7.4","S7 - Background & Notification","P0","Tapping the notification returns to the app","Episode playing, app backgrounded","-","1. Tap the notification body.
+2. Press back a few times.","- Returns to the screen you left, not a fresh Discover.
+- Back walks the original stack - no duplicate screens.","Pass","Tested by hand. Tapping the notification returns to the screen that was open, no duplicate.",""
+"TC-7.5","S7 - Background & Notification","P0","Notification clears when playback stops","Short episode playing","The Off-By-One Episode","1. Let it finish. Wait 10s. Check the shade.","- Notification removed or no longer ongoing. Nothing claims active playback.","Pass","Tested by hand. Notification clears once playback stops.",""
+"TC-7.6","S7 - Background & Notification","P1","Lock screen controls","Episode playing","-","1. Lock the phone, wake the screen, use the lock-screen controls.","- Correct title and artwork. Pause and play both work.","Not Run","",""
+"TC-7.7","S7 - Background & Notification","P0","Playback works with notifications denied","Notification permission revoked (Appendix B)","AI Writes Our Show Notes Now","1. Deny the notification permission and relaunch.
+2. Play an episode, press Home, listen for 20s.
+3. Arm a 1-min sleep timer.","- Audio plays and keeps playing in the background.
+- No crash.
+- Sleep timer still stops playback; only the notification is missing.","Pass","Tested by hand. Playback and background playback both work with notifications denied. No crash.",""
+"TC-7.8","S7 - Background & Notification","P2","Removing the app from Recents","Episode playing","-","1. Swipe MiniCast away from Recents. Listen.","- Either playback stops and the notification clears, or it continues with a working notification.
+- Never audio with no way to stop it.","Not Run","",""
+"TC-7.9","S7 - Background & Notification","P2","Headset media keys","Episode playing","-","1. Send play/pause from a headset or media key.","- Toggles correctly and the in-app control agrees.","Not Run","",""
+"TC-8.1","S8 - Interruptions","P0","Incoming call","Episode playing, second phone available","AI Writes Our Show Notes Now","1. Have someone call the device at about 0:15. Don't answer at first.
+2. Answer, talk 15s, hang up.","- Audio pauses on the first ring and stays paused for the whole call.
+- Position preserved.
+- After hanging up, behaviour is consistent - either auto-resumes from the same point or waits for play.","Pass","Tested by hand. Pauses on the incoming call, stays paused for its duration, resumes afterwards.",""
+"TC-8.2","S8 - Interruptions","P0","Outgoing call","Episode playing","AI Writes Our Show Notes Now","1. Place a call while an episode is playing.","- Pauses as soon as dialling starts. Same recovery as TC-8.1.","Pass","Tested by hand. Same behaviour on an outgoing call.",""
+"TC-8.3","S8 - Interruptions","P0","Another app takes the audio","Episode playing","AI Writes Our Show Notes Now","1. Start playback in another audio app.
+2. Stop the other app.","- MiniCast pauses - never two streams at once.
+- Does not auto-resume when the other app stops.","Pass","Tested by hand. Another app taking the audio pauses MiniCast. No overlapping playback.",""
+"TC-8.4","S8 - Interruptions","P0","Short interruption (notification sound, alarm)","Episode playing","-","1. Trigger a notification sound, then a timer/alarm.","- Ducks or briefly pauses, then carries on. Not killed permanently.","Pass","Tested by hand. Stays paused while the alarm sounds and resumes once it is stopped.",""
+"TC-8.5","S8 - Interruptions","P1","Interruption while loading","-","AI Writes Our Show Notes Now","1. Tap an episode and take a call during the loading delay.","- No crash, no stuck spinner. State resolves after the call.","Not Run","",""
+"TC-8.6","S8 - Interruptions","P1","Interruption right at the end of an episode","-","The Off-By-One Episode","1. Take a call at about 0:09. Repeat 3 times.","- No crash. One coherent end state, no ghost notification.","Not Run","",""
+"TC-8.7","S8 - Interruptions","P2","Interruption with a sleep timer armed","1-min timer armed","-","1. Take a 30s call 20s into the countdown.","- Timer behaviour is defined and the label reflects what will actually happen.","Not Run","",""
+"TC-8.8","S8 - Interruptions","P2","Bluetooth connect / disconnect mid-playback","Episode playing on speaker","-","1. Connect a BT headset, then disconnect it.","- Audio moves across without restarting.
+- Disconnect pauses rather than switching to speaker.","Not Run","",""
+"TC-9.1","S9 - Lifecycle","P0","Rotation during playback","Episode playing at ~0:20","AI Writes Our Show Notes Now","1. Rotate to landscape and back while listening.","- Audio doesn't glitch, stop or restart.
+- Position, title, speed and seek bar all preserved.
+- Landscape usable on every screen - nothing clipped or unreachable.","Fail","Timer snaps to 0:00 the moment the screen rotates and counts up again while the audio carries on from the real position. See BUG-006.","BUG-006"
+"TC-9.2","S9 - Lifecycle","P0","Rotation while paused","Episode paused at 0:20","-","1. Rotate to landscape and back.","- Still paused at 0:20. Does not start playing on its own.","Fail","Paused at the end: the screen showed 1:00, then 0:00 after rotating, while the player stayed at 60s. See BUG-006.","BUG-006"
+"TC-9.3","S9 - Lifecycle","P0","Rotation with a search active","Search results shown","'th'","1. Rotate to landscape and back.","- Query and results survive. No reload, no revert to Featured.","Pass","Query and both results survived rotating in each direction.",""
+"TC-9.4","S9 - Lifecycle","P1","Rotation on Settings and show detail","-","Startup Stories","1. Scroll a show's episode list and rotate.
+2. Change all four settings and rotate.","- Scroll position and all setting values survive.
+- No flash of defaults.","Fail","In landscape the Settings screen is cut off - 'Notify when sleep timer ends' is off screen and the screen will not scroll, so the setting cannot be reached. See BUG-007.","BUG-007"
+"TC-9.5","S9 - Lifecycle","P1","Repeated rotation","Episode playing","AI Writes Our Show Notes Now","1. Rotate back and forth ~10 times quickly.","- No crash, audio never breaks, memory doesn't climb.","Pass","Rotated back and forth repeatedly with no crash and no interruption to playback.",""
+"TC-9.6","S9 - Lifecycle","P0","App killed in the background and restored","Episode paused at ~0:25","AI Writes Our Show Notes Now","1. Press Home, kill the app (Appendix B), reopen from Recents.","- Restores without crashing.
+- With Resume ON it returns to ~0:25.","Fail","With Resume on, reopening after the app was killed did not restore the position. See BUG-011.","BUG-011"
+"TC-9.7","S9 - Lifecycle","P0","Don't Keep Activities","Developer option enabled","-","1. Turn on Don't Keep Activities.
+2. Walk Discover > show > Now Playing, pressing Home and returning at each step.","- Every screen restores correctly. No crash, no blank screens.","Fail","Two problems with Don't keep activities on. Playback restarts from 0:00 when the app comes back to the foreground (BUG-008). Separately, after pausing and leaving Now Playing, the notification shows the episode advancing with no audio - this one also happens with the setting off (BUG-009).","BUG-008"
+"TC-9.8","S9 - Lifecycle","P1","Theme and font size changes","Episode playing","-","1. Switch the system to dark mode, then to the largest font size.
+2. Check every screen.","- Audio continues.
+- Nothing clipped or overlapping; both themes readable.","Not Run","",""
+"TC-9.9","S9 - Lifecycle","P1","Back stack","-","-","1. Discover > show > Now Playing, then press back three times.
+2. Repeat with the back gesture.","- Show detail, Discover, then exits. No blank screens.
+- Gesture behaves the same as the arrow.","Pass","Back walked the stack correctly from Now Playing to the show, to Discover, then out. Gesture behaved the same.",""
+"TC-10.1","S10 - Network","P0","Cold start with no network","Airplane mode on, app data wiped","-","1. Turn airplane mode on and launch the app.","- Clear error: ""Couldn't reach the server. Check your connection."" with a retry option.
+- No endless spinner, no blank screen.","Pass","Offline cold start showed a clear error with a retry option - no endless spinner.",""
+"TC-10.2","S10 - Network","P0","Retry recovers","Offline error showing","-","1. Turn airplane mode off and tap Retry.","- Catalog loads. Error clears. No app restart needed.","Pass","Retry after restoring the network loaded the catalogue and cleared the error.",""
+"TC-10.3","S10 - Network","P1","Search and show detail while offline","App loaded, then offline","'th', Science Weekly","1. Go offline, search, then open a show.
+2. Come back online and retry.","- Both show an error with retry.
+- Previously loaded content isn't wiped.
+- Retry works.","Not Run","",""
+"TC-10.4","S10 - Network","P0","Losing network mid-playback","Episode playing at ~0:10","AI Writes Our Show Notes Now","1. Turn on airplane mode while listening. Keep watching for 30s.","- Buffered audio plays out, then a clean pause.
+- Timer must not keep ticking after the audio stops.","Fail","Audio stopped when the buffer ran out but the timer and seek bar kept advancing, with no error shown. See BUG-010.","BUG-010"
+"TC-10.5","S10 - Network","P0","Recovering after a mid-playback failure","Playback failed offline","-","1. Turn airplane mode off and retry.","- Resumes from where it failed, not from 0:00.","Fail","Turning airplane mode off did not bring playback back - no audio, no retry, and the timer was still moving. See BUG-010.","BUG-010"
+"TC-10.6","S10 - Network","P1","Starting playback while offline","Offline, content already loaded","-","1. Tap an episode.","- Fails fast with a clear message and retry. No ANR.","Not Run","",""
+"TC-10.7","S10 - Network","P1","Flapping connection","Episode playing","-","1. Toggle airplane mode on and off 5 times over 30s.","- No crash or ANR. Errors don't stack. Final state matches final connectivity.","Not Run","",""
+"TC-10.8","S10 - Network","P2","Offline error survives rotation","Offline error showing","-","1. Rotate the phone.","- Error and retry still there and still working.","Not Run","",""
+"TC-10.9","S10 - Network","P2","Saved position survives an offline period","Resume ON","The Great Password Purge","1. Play to 0:18, force close, go offline, reopen, then come back online and play it.","- Position still remembered - it's stored locally.","Not Run","",""
+"TC-11.1","S11 - Cross-cutting","P1","TalkBack","TalkBack on","-","1. Traverse Discover, Now Playing and Settings.","- Every control has a sensible label.
+- Seek bar announces position and can be adjusted.
+- Settings announce their on/off state.","Not Run","",""
+"TC-11.2","S11 - Cross-cutting","P1","Touch targets","-","-","1. Check the transport controls and Settings chips.","- All at least 48dp. Enough spacing to avoid mis-taps.","Not Run","",""
+"TC-11.4","S11 - Cross-cutting","P2","RTL layout","Force RTL enabled","-","1. Check all screens with RTL forced.","- Layout mirrors correctly. -15s / +15s don't swap meaning.","Not Run","",""
+"TC-11.6","S11 - Cross-cutting","P2","Install over an existing version","Settings changed, episodes part-played","-","1. Reinstall over the top without uninstalling.","- Settings and saved positions survive. No crash on first launch.","Not Run","",""

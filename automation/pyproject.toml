@@ -1,0 +1,53 @@
+[project]
+name = "minicast-e2e"
+version = "1.0.0"
+description = "End-to-end UI tests for the MiniCast Android app"
+requires-python = ">=3.11"
+dependencies = [
+    "Appium-Python-Client>=4.1",
+    "selenium>=4.24",
+    "pytest>=8.3",
+    "pytest-rerunfailures>=14.0",
+    "allure-pytest>=2.13",
+    "pytest-xdist>=3.6",
+    "PyYAML>=6.0",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.6", "mypy>=1.11"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --alluredir=allure-results"
+markers = [
+    "smoke: quick confidence run - launch, browse, play",
+    "regression: the full suite",
+    "playback: anything that starts audio",
+    "known_bug: expected to fail against an open defect (xfail strict)",
+    "android_only: relies on adb or another Android-only facility",
+    "audio: needs real audio capture; not part of the CI gate",
+]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s %(levelname)-5s %(message)s"
+log_cli_date_format = "%H:%M:%S"
+
+[tool.ruff]
+line-length = 110
+
+[tool.mypy]
+python_version = "3.11"
+# Appium and Selenium ship few useful stubs; checking our own code is the point.
+ignore_missing_imports = true
+files = ["minicast", "tests", "conftest.py"]
+# Two files named conftest.py map to the same module name without this.
+explicit_package_bases = true
+namespace_packages = true
+mypy_path = "."
+# The probe contract is the thing worth enforcing, so protocol mismatches are errors.
+disallow_untyped_defs = false
+# Test functions take fixtures and are unannotated; without this their bodies
+# are skipped entirely and typos in them go unreported.
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true

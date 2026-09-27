@@ -1,0 +1,54 @@
+"""Configuration changes. Rotating the app rebuilds the screen from scratch."""
+from __future__ import annotations
+
+import time
+
+import allure
+import pytest
+from appium.webdriver.webdriver import WebDriver
+
+from minicast.pages import Pages
+from minicast.probes import PlaybackProbe
+from minicast.support import catalog
+from tests.conftest import covers
+
+
+@allure.feature("Lifecycle")
+@allure.story("Rotation")
+@covers("TC-9.1", "TC-9.2")
+@pytest.mark.regression
+@pytest.mark.playback
+def test_rotation_during_playback_keeps_state_and_audio(pages: Pages, driver: WebDriver, probe: PlaybackProbe):
+    """Rotate mid-playback: audio must not stop and the screen must come back intact."""
+    pages.discover.open_show(catalog.DAILY_BYTE)
+    pages.show.play(catalog.LONG)
+    pages.show.open_now_playing()
+    now = pages.now
+
+    # The app carries a position between episodes (BUG-003), so an episode can open
+    # near its end and finish mid-test. Wind back to the start first.
+    now.pause()
+    for _ in range(6):
+        now.skip_back()
+    now.resume()
+    now.wait_for_position(5, timeout=25)
+
+    before_state = probe.state()
+    before_pos = probe.position()
+    original = driver.orientation
+
+    try:
+        driver.orientation = "LANDSCAPE"
+        time.sleep(2.5)
+        assert probe.state() == before_state, "playback state changed on rotation"
+        assert probe.position() >= before_pos, "playback restarted on rotation"
+        assert now.episode_title() == catalog.LONG, "episode metadata lost on rotation"
+        assert now.duration() == 60
+
+        driver.orientation = "PORTRAIT"
+        time.sleep(2.5)
+        assert now.episode_title() == catalog.LONG
+        assert probe.state() == before_state
+        assert probe.audio_active(), "audio stopped across the rotation"
+    finally:
+        driver.orientation = original

@@ -1,0 +1,10 @@
+platformName: Android
+appium:automationName: UiAutomator2
+appium:appPackage: com.audiomob.minicast
+appium:appActivity: .MainActivity
+appium:newCommandTimeout: 120
+appium:adbExecTimeout: 40000
+appium:uiautomator2ServerLaunchTimeout: 90000
+appium:disableWindowAnimation: true
+appium:ignoreHiddenApiPolicyError: true
+# app is injected by conftest from --app / MINICAST_APK

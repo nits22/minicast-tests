@@ -1,0 +1,94 @@
+# Extends the take-home starter workflow: same emulator setup, with the test
+# framework wired in and the run moved into automation/ci/run_e2e.sh.
+name: e2e
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# A newer push makes an in-flight run pointless.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: automation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable KVM (hardware acceleration for the emulator)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+        working-directory: .
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: automation/uv.lock
+
+      - name: Install the test framework
+        run: |
+          uv sync --locked
+          npm install -g appium@2
+          appium driver install uiautomator2
+
+      # Cheap and device-free: catches lint and contract breaks before we spend
+      # ten minutes booting an emulator.
+      - name: Lint and type-check
+        run: |
+          uv run ruff check .
+          uv run mypy
+
+      - name: Run tests on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          # The action's default options include -noaudio; this app plays audio and
+          # `dumpsys audio` is one of the three signals the tests assert on.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none
+          disable-animations: true
+          working-directory: automation
+          # One script file: the action runs each inline line in its own shell, so
+          # loops and if-blocks do not survive being written inline.
+          script: bash ci/run_e2e.sh
+
+      - name: Build the Allure report
+        if: always()
+        run: |
+          npm install -g allure-commandline
+          allure generate allure-results --clean -o allure-report
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results
+          path: |
+            automation/allure-report
+            automation/allure-results
+            automation/appium.log
+            automation/logcat.txt
+          retention-days: 14
+          if-no-files-found: warn

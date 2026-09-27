@@ -1,0 +1,168 @@
+[
+ {
+  "show": "The Daily Byte",
+  "author": "Byte Media",
+  "episodes": [
+   {
+    "title": "Zero-Day in the Coffee Machine",
+    "duration": "0:10",
+    "released": "Aug 18, 2026"
+   },
+   {
+    "title": "The Great Password Purge",
+    "duration": "0:30",
+    "released": "Aug 11, 2026"
+   },
+   {
+    "title": "AI Writes Our Show Notes Now",
+    "duration": "1:00",
+    "released": "Aug 4, 2026"
+   },
+   {
+    "title": "Quantum Bugs and Where to Find Them",
+    "duration": "0:30",
+    "released": "Jul 28, 2026"
+   },
+   {
+    "title": "The Off-By-One Episode",
+    "duration": "0:10",
+    "released": "Jul 21, 2026"
+   }
+  ]
+ },
+ {
+  "show": "History Rewind",
+  "author": "Rewind Studios",
+  "episodes": [
+   {
+    "title": "The Shortest War in History",
+    "duration": "0:10",
+    "released": "Aug 15, 2026"
+   },
+   {
+    "title": "Rome Wasn't Debugged in a Day",
+    "duration": "0:30",
+    "released": "Aug 8, 2026"
+   },
+   {
+    "title": "The Library of Alexandria Incident",
+    "duration": "1:00",
+    "released": "Aug 1, 2026"
+   },
+   {
+    "title": "Napoleon's Lost Playlist",
+    "duration": "0:30",
+    "released": "Jul 25, 2026"
+   }
+  ]
+ },
+ {
+  "show": "Mindful Minutes",
+  "author": "Calm Collective",
+  "episodes": [
+   {
+    "title": "One Breath at a Time",
+    "duration": "0:10",
+    "released": "Aug 19, 2026"
+   },
+   {
+    "title": "The Thirty-Second Reset",
+    "duration": "0:30",
+    "released": "Aug 12, 2026"
+   },
+   {
+    "title": "A Minute of Stillness",
+    "duration": "1:00",
+    "released": "Aug 5, 2026"
+   },
+   {
+    "title": "Counting Down to Calm",
+    "duration": "0:30",
+    "released": "Jul 29, 2026"
+   }
+  ]
+ },
+ {
+  "show": "Startup Stories",
+  "author": "Founder Radio",
+  "episodes": [
+   {
+    "title": "The Pivot That Wasn't",
+    "duration": "0:30",
+    "released": "Aug 17, 2026"
+   },
+   {
+    "title": "Burn Rate Blues",
+    "duration": "0:10",
+    "released": "Aug 10, 2026"
+   },
+   {
+    "title": "Series A, B, and Sea",
+    "duration": "1:00",
+    "released": "Aug 3, 2026"
+   },
+   {
+    "title": "The MVP Was a Spreadsheet",
+    "duration": "0:30",
+    "released": "Jul 27, 2026"
+   },
+   {
+    "title": "Exit Strategy",
+    "duration": "0:10",
+    "released": "Jul 20, 2026"
+   }
+  ]
+ },
+ {
+  "show": "Science Weekly",
+  "author": "Lab Notes",
+  "episodes": [
+   {
+    "title": "Why the Sky Isn't Actually Blue",
+    "duration": "0:30",
+    "released": "Aug 14, 2026"
+   },
+   {
+    "title": "The Ten-Second Universe",
+    "duration": "0:10",
+    "released": "Aug 7, 2026"
+   },
+   {
+    "title": "Sixty Seconds of Gravity",
+    "duration": "1:00",
+    "released": "Jul 31, 2026"
+   },
+   {
+    "title": "Peer Review Under Pressure",
+    "duration": "0:30",
+    "released": "Jul 24, 2026"
+   }
+  ]
+ },
+ {
+  "show": "True North Tales",
+  "author": "Wander Audio",
+  "episodes": [
+   {
+    "title": "Lost in Reykjavik",
+    "duration": "0:30",
+    "released": "Aug 16, 2026"
+   },
+   {
+    "title": "The Ten-Second Layover",
+    "duration": "0:10",
+    "released": "Aug 9, 2026"
+   },
+   {
+    "title": "A Minute in Marrakesh",
+    "duration": "1:00",
+    "released": "Aug 2, 2026"
+   },
+   {
+    "title": "Trains, Fjords, and Podcasts",
+    "duration": "0:30",
+    "released": "Jul 26, 2026"
+   }
+  ]
+ }
+]
