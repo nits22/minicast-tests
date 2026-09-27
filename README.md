@@ -6,7 +6,7 @@ Manual testing and automated E2E tests for `minicast-release.apk`.
 
 | Part | Where |
 |---|---|
-| 1 — Test plan | [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md) · [`docs/index.html`](docs/index.html) · [`MiniCast_Test_Plan.docx`](MiniCast_Test_Plan.docx) |
+| 1 — Test plan | [**Browsable report**](https://nits22.github.io/minicast-tests/) · [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md) · [`MiniCast_Test_Plan.docx`](MiniCast_Test_Plan.docx) |
 | 1 — Test cases and results | [`TEST_CASES.csv`](TEST_CASES.csv) |
 | 2 — Bug reports | [`docs/BUG_REPORTS.md`](docs/BUG_REPORTS.md) |
 | 3 — Automated tests | [`automation/`](automation) — see below |
@@ -49,10 +49,14 @@ automation/                the Appium + pytest suite
 .github/workflows/e2e.yml  runs the suite on an emulator
 ```
 
-## Publishing the report
+## The report
 
-Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/docs`.
-One self-contained file; the only external request is Google Fonts.
+**[nits22.github.io/minicast-tests](https://nits22.github.io/minicast-tests/)** — the plan and
+all 96 cases with their results, filterable by priority and outcome, one anchor per case.
+
+Published from `/docs` on `main` (Settings → Pages → Deploy from a branch). One self-contained
+file; the only external request is Google Fonts. Re-run `tools/render_report.py` and push to
+update it.
 
 ## Test data
 

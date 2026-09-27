@@ -49,8 +49,12 @@ jobs:
       - name: Install the test framework
         run: |
           uv sync --locked
-          npm install -g appium@2
-          appium driver install uiautomator2
+          # Pinned, not floating. `appium@2` resolves to 2.19.0, and the current
+          # uiautomator2 driver wants server ^3.0.0-rc.2 - the install then fails
+          # outright. These are the versions the suite was verified against.
+          npm install -g appium@2.10.3
+          appium driver install uiautomator2@3.5.6
+          appium --version && appium driver list --installed
 
       # Cheap and device-free: catches lint and contract breaks before we spend
       # ten minutes booting an emulator.
