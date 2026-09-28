@@ -115,3 +115,39 @@ class BasePage:
 
     def wait_until(self, predicate, timeout: float = TIMEOUT, message: str = ""):
         return WebDriverWait(self.driver, timeout, POLL).until(lambda d: predicate(), message)
+
+    # ---- scrolling ------------------------------------------------------
+    # Finger swipe on the current window. "down"/"left" are content directions:
+    # scroll down to see what is below (finger moves up); scroll left to see
+    # what is to the right (finger moves left). Same helper on Android and iOS.
+    def scroll_vertical(self, direction: str = "down", percent: float = 0.5,
+                        duration_ms: int = 400) -> None:
+        direction = direction.lower()
+        if direction not in ("down", "up"):
+            raise ValueError(f"direction must be 'down' or 'up', got {direction!r}")
+        width, height = self._window()
+        travel = int(height * percent)
+        mid_x = width // 2
+        mid_y = height // 2
+        if direction == "down":
+            self.driver.swipe(mid_x, mid_y + travel // 2, mid_x, mid_y - travel // 2, duration_ms)
+        else:
+            self.driver.swipe(mid_x, mid_y - travel // 2, mid_x, mid_y + travel // 2, duration_ms)
+
+    def scroll_horizontal(self, direction: str = "left", percent: float = 0.5,
+                          duration_ms: int = 400) -> None:
+        direction = direction.lower()
+        if direction not in ("left", "right"):
+            raise ValueError(f"direction must be 'left' or 'right', got {direction!r}")
+        width, height = self._window()
+        travel = int(width * percent)
+        mid_x = width // 2
+        mid_y = height // 2
+        if direction == "left":
+            self.driver.swipe(mid_x + travel // 2, mid_y, mid_x - travel // 2, mid_y, duration_ms)
+        else:
+            self.driver.swipe(mid_x - travel // 2, mid_y, mid_x + travel // 2, mid_y, duration_ms)
+
+    def _window(self) -> tuple[int, int]:
+        size = self.driver.get_window_size()
+        return int(size["width"]), int(size["height"])
